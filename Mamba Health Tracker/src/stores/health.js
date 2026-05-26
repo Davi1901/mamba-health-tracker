@@ -1,14 +1,13 @@
 import { defineStore } from 'pinia'
+// Pinia serve para gerências o estado no caso os dados do App.
 
 export const useHealthStore = defineStore('health', {
   state: () => ({
-    // Módulo de Jejum [cite: 6]
     jejumAtivo: JSON.parse(localStorage.getItem('jejumAtivo')) || false,
     inicioJejum: localStorage.getItem('inicioJejum') || null,
     janelaSelecionada: localStorage.getItem('janelaSelecionada') || '16:8',
     historicoJejuns: JSON.parse(localStorage.getItem('historicoJejuns')) || [],
 
-    // Módulo de Nutrição [cite: 11]
     metaCalorica: 2000,
     refeicoesDoDia: JSON.parse(localStorage.getItem('refeicoesDoDia')) || []
   }),
@@ -25,7 +24,6 @@ export const useHealthStore = defineStore('health', {
       const fim = new Date()
       const inicio = new Date(this.inicioJejum)
       
-      // Cálculo matemático de horas [cite: 30]
       const diffMs = fim - inicio
       const totalHoras = (diffMs / (1000 * 60 * 60)).toFixed(1)
 

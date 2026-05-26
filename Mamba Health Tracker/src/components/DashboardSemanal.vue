@@ -40,15 +40,30 @@ const mediaCalorica = computed(() => {
   return (total / 7).toFixed(0)
 })
 
-// Configuração do Gráfico (Requisito 26)
-const chartData = computed(() => ({
-  labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-  datasets: [{
-    label: 'Calorias Consumidas',
-    backgroundColor: '#10b981',
-    data: [1800, 2100, 1900, 2200, 1700, 2500, mediaCalorica.value] // Último dado é dinâmico
-  }]
-}))
+
+const getDiaSemanaIndex = () => {
+  const day = new Date().getDay()
+  return day === 0 ? 6 : day - 1
+}
+
+const chartData = computed(() => {
+  const valoresPadrao = [1800, 2100, 1900, 2200, 1700, 2500, 1600]
+  
+  const diaHojeIndex = getDiaSemanaIndex()
+  
+  const totalConsumidoHoje = store.refeicoesDoDia.reduce((acc, r) => acc + r.kcal, 0)
+  
+  valoresPadrao[diaHojeIndex] = totalConsumidoHoje
+
+  return {
+    labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+    datasets: [{
+      label: 'Calorias Consumidas',
+      backgroundColor: '#10b981',
+      data: valoresPadrao 
+    }]
+  }
+})
 
 const chartOptions = {
   responsive: true,
